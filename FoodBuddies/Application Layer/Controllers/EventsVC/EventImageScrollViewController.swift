@@ -15,7 +15,8 @@ class EventImageScrollViewController: UIViewController, UIScrollViewDelegate {
     
 //TODO: - General
     
-    var imageData : [String] = ["1.jpg","2.jpg","1.jpg","3.jpg"]
+    var imageData : [String] = ["buffet.jpg","buffet.jpg","buffet.jpg","buffet.jpg"]
+    var globalTimer = Timer()
 //TODO: - Controls
     var currentInd : Int = Int()
     
@@ -38,13 +39,17 @@ class EventImageScrollViewController: UIViewController, UIScrollViewDelegate {
         self.removeControllsFromSubView()
         self.firstMethods()
         
-        _ = Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(EventImageScrollViewController.sayHello), userInfo: nil, repeats: true)
+        globalTimer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(EventImageScrollViewController.sayHello), userInfo: nil, repeats: true)
 
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        globalTimer.invalidate()
     }
     
     
@@ -125,7 +130,7 @@ class EventImageScrollViewController: UIViewController, UIScrollViewDelegate {
                 let viewback: UIView = UIView(frame: CGRect(x: originalWidth * CGFloat(i), y: 0, width: originalWidth, height: originalHeight))
                 
                 let imageView : UIImageView = UIImageView(frame:CGRect(x: self.headerView.frame.origin.x, y: self.headerView.frame.origin.y+10, width: self.headerView.frame.size.width, height: self.headerView.frame.size.height-10))
-                imageView.contentMode = UIViewContentMode.scaleAspectFit
+                imageView.contentMode = UIViewContentMode.scaleToFill
                 
                 imageView.image = UIImage(named: self.imageData[i])
                 //let ur = NSURL(string: self.hotelData[i])

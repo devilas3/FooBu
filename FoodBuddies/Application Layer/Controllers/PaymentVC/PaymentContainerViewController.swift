@@ -8,11 +8,12 @@
 
 import UIKit
 
-class PaymentContainerViewController: UIViewController {
+class PaymentContainerViewController: BaseVC {
 
     
 //TODO: - Genreal
     
+  
     
 //TODO: - Controls
     
@@ -27,8 +28,12 @@ class PaymentContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        createShareIcon()
         
+        // Do any additional setup after loading the view.
+        self.btnGuestOutlet.setTitleColor(AppRedColor, for: .normal)
+        self.btnHostOutlet.setTitleColor(UIColor.black, for: .normal)
+
         
         //Revealviewcontroller code
         if self.revealViewController() != nil {
@@ -90,7 +95,8 @@ class PaymentContainerViewController: UIViewController {
                 newController.didMove(toParentViewController: self)
             })
             
-            
+            self.btnGuestOutlet.setTitleColor(AppRedColor, for: .normal)
+            self.btnHostOutlet.setTitleColor(UIColor.black, for: .normal)
             
         }else{
             
@@ -109,7 +115,9 @@ class PaymentContainerViewController: UIViewController {
                 oldController.removeFromParentViewController()
                 newController.didMove(toParentViewController: self)
             })
-
+            
+            self.btnHostOutlet.setTitleColor(AppRedColor, for: .normal)
+            self.btnGuestOutlet.setTitleColor(UIColor.black, for: .normal)
         }
     }
     

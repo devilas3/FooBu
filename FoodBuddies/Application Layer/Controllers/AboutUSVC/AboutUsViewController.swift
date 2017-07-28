@@ -15,9 +15,11 @@ class AboutUsViewController: BaseVC,UIWebViewDelegate {
     
 //TODO: - Controls
     
+    @IBOutlet weak var lblTitle: UILabel!
     
     @IBOutlet weak var webView: UIWebView!
     
+    @IBOutlet weak var btnBackOutlet: UIButton!
     
 //TODO: - Let's Code
     
@@ -26,6 +28,13 @@ class AboutUsViewController: BaseVC,UIWebViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        /*if FoodBuddiesSingleton.shared.htmlValue != 2{
+            if self.revealViewController() != nil {
+                btnBackOutlet.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            }
+        }*/
+        
         // Adding webView content
         do {
             guard let filePath = Bundle.main.path(forResource: "webpage", ofType: "html")
@@ -56,15 +65,28 @@ class AboutUsViewController: BaseVC,UIWebViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        self.navigationController?.isNavigationBarHidden = true
         var screenName : String = String()
         if FoodBuddiesSingleton.shared.htmlValue == 1{
             screenName = "About Us"
         }else if FoodBuddiesSingleton.shared.htmlValue == 2{
             screenName = "Terms & Conditions"
+            /*if FoodBuddiesSingleton.shared.isOpenFromMenu{
+                 self.btnBackOutlet.setImage(UIImage(named: "menu"), for: .normal)
+                //Assign Side menu
+                if self.revealViewController() != nil {
+                    btnBackOutlet.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+                    self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                }
+            }else{
+                 self.btnBackOutlet.setImage(UIImage(named: "back"), for: .normal)
+            }*/
+           
         }else if FoodBuddiesSingleton.shared.htmlValue == 3{
             screenName = "Privacy Policy"
         }
         
+        self.lblTitle.text = screenName
         showAlert("", message: screenName)
     }
     
@@ -86,6 +108,11 @@ class AboutUsViewController: BaseVC,UIWebViewDelegate {
 //TODO: - UIButton Action
    
     @IBAction func btnBackClick(_ sender: Any) {
+        if self.navigationController != nil{
+            self.navigationController!.popViewController(animated: true)
+        }else{
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
 }

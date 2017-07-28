@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PaymentGuestViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class PaymentGuestViewController: BaseVC,UITableViewDelegate,UITableViewDataSource {
 
     
 //TODO: - General
@@ -38,6 +38,14 @@ class PaymentGuestViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellID", for: indexPath) as! PaymentGuestTableViewCell
+        
+        cell.lblDate.text = "16 Jul 2017, 3:47PM"
+        cell.lblEventName.text = "Ovenstory Pizza"
+        cell.lblHostName.text = "John Wick"
+        cell.lblPrice.text = "£ 200"
+        
+        cell.imgPic.image = UIImage(named: "buffet.jpg")
+        cell.imgPic.contentMode = UIViewContentMode.scaleToFill
         
         return cell
     }

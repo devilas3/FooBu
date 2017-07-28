@@ -40,6 +40,12 @@ class EventAvailabilityViewController: UIViewController {
     
 //TODO: - UIButton Action
     
+    @IBAction func btnBookNowClick(_ sender: Any) {
+        let bookCountVC = self.storyboard?.instantiateViewController(withIdentifier: "idBookCountViewController") as! BookCountViewController
+        bookCountVC.view.backgroundColor = .clear
+        bookCountVC.modalPresentationStyle = .overCurrentContext
+        self.present(bookCountVC, animated: false, completion: nil)
+    }
     
 
 

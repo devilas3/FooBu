@@ -9,10 +9,50 @@
 import UIKit
 
 
+enum Direction { case In, Out }
+
+protocol Dimmable { }
+
+extension Dimmable where Self: UIViewController {
+    
+    func dim(direction: Direction, color: UIColor = UIColor.black, alpha: CGFloat = 0.0, speed: Double = 0.0) {
+        
+        switch direction {
+        case .In:
+            
+            // Create and add a dim view
+            let dimView = UIView(frame: view.frame)
+            dimView.backgroundColor = color
+            dimView.alpha = 0.0
+            view.addSubview(dimView)
+            
+            // Deal with Auto Layout
+            dimView.translatesAutoresizingMaskIntoConstraints = false
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[dimView]|", options: [], metrics: nil, views: ["dimView": dimView]))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[dimView]|", options: [], metrics: nil, views: ["dimView": dimView]))
+            
+            // Animate alpha (the actual "dimming" effect)
+            UIView.animate(withDuration: speed) { () -> Void in
+                dimView.alpha = alpha
+            }
+            
+        case .Out:
+            UIView.animate(withDuration: speed, animations: { () -> Void in
+                self.view.subviews.last?.alpha = alpha 
+            }, completion: { (complete) -> Void in
+                self.view.subviews.last?.removeFromSuperview()
+            })
+        }
+    }
+}
+
+
+
 
 class mainCollectionViewCell : UICollectionViewCell{
     
     @IBOutlet weak var lblTitle: UILabel!
+    @IBOutlet weak var lblUnderline: UILabel!
     
 }
 
@@ -22,7 +62,7 @@ class mainTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollectionV
     
 //TODO: - General
     
-    let titleArray : [String] = ["   info   ", "   About Food   ", "   Availability   ", "   Venue   ", "   Booked Guest   "]
+    let titleArray : [String] = ["   info   ", "   Food   ", "   Availability   ", "   Venue   ", "   Party Goers   "]
 //TODO: - Controls
     
     @IBOutlet weak var mainCollectionView: UICollectionView!
@@ -46,6 +86,12 @@ class mainTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellID", for: indexPath) as! mainCollectionViewCell
         cell.lblTitle.text = self.titleArray[indexPath.row]
+        
+        if FoodBuddiesSingleton.shared.childValue == indexPath.row{
+            cell.lblUnderline.isHidden = false
+        }else{
+            cell.lblUnderline.isHidden = true
+        }
         return cell
     }
     
@@ -53,6 +99,7 @@ class mainTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollectionV
         print("indexPath:\(indexPath.row)")
         FoodBuddiesSingleton.shared.childValue = indexPath.row
        NotificationCenter.default.post(name: Notification.Name("changeChildForMe"), object: nil)
+        mainCollectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -78,7 +125,7 @@ class mainTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollectionV
 
 
 
-class EventDetailViewController: UIViewController, UITableViewDataSource,UITableViewDelegate {
+class EventDetailViewController: BaseVC, UITableViewDataSource,UITableViewDelegate {
 
     
 //TODO: - General
@@ -102,7 +149,9 @@ class EventDetailViewController: UIViewController, UITableViewDataSource,UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        createShareIcon()
+        
         // Do any additional setup after loading the view.
         self.tblMain.delegate = self
         self.tblMain.dataSource = self
@@ -180,7 +229,6 @@ class EventDetailViewController: UIViewController, UITableViewDataSource,UITable
         }else{
             self.dismiss(animated: true, completion: nil)
         }
-     
     }
-
+    
 }

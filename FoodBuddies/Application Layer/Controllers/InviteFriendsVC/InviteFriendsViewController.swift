@@ -9,7 +9,7 @@
 import UIKit
 import Material
 
-class InviteFriendsViewController: UIViewController {
+class InviteFriendsViewController: BaseVC {
 
     
 //TODO: - General

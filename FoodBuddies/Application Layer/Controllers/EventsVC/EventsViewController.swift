@@ -38,11 +38,6 @@ class EventsViewController: BaseVC,UITableViewDataSource,UITableViewDelegate {
     
 //TODO: - Controls
     
-    @IBOutlet weak var btnEventOutlet: UIButton!
-    
-    @IBOutlet weak var btnMenuOutlet: UIButton!
-    
-    @IBOutlet weak var btnCreateEventOutlet: UIButton!
     
     @IBOutlet weak var tblMain: UITableView!
     
@@ -53,19 +48,11 @@ class EventsViewController: BaseVC,UITableViewDataSource,UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        createShareIcon()
+        
         // Do any additional setup after loading the view.
         self.navigationController?.isNavigationBarHidden = true
-        
-        
-        //Revealviewcontroller code
-      
-        if self.revealViewController() != nil {
-            btnMenuOutlet.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-        }
-        
-        
         
     }
 
@@ -87,8 +74,8 @@ class EventsViewController: BaseVC,UITableViewDataSource,UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellID", for: indexPath) as! EventTableViewCell
         
         cell.lblDate.text = "07 Jul 2017, 2:51 PM"
-        cell.lblAvailable.text = "Available Seats: 05"
-        cell.lblEventPrice.text = "100"
+        cell.lblAvailable.text = "2.5\(star)  Available Seats: 05"
+        cell.lblEventPrice.text = "£ 100"
         cell.lbLEventName.text = "Panjabi Night"
         cell.lblEventAddress.text = "North India, Chinese"
         cell.imgPic.image = UIImage(named: "1.jpg")
@@ -105,15 +92,7 @@ class EventsViewController: BaseVC,UITableViewDataSource,UITableViewDelegate {
     
 
 //TODO: - UIButton Action
-    
-    @IBAction func btnEventClick(_ sender: Any) {
-    }
-    
-    
-    @IBAction func btnCreateEventClick(_ sender: Any) {
-    }
-    
-    
+   
     
 
 }

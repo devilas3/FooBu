@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyProfileViewController: UIViewController {
+class MyProfileViewController: BaseVC {
 
     
 //TODO: - General

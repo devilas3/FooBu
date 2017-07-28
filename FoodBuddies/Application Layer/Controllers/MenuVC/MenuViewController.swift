@@ -8,12 +8,12 @@
 
 import UIKit
 
-class MenuViewController: UIViewController, UITableViewDataSource,UITableViewDelegate {
+class MenuViewController: BaseVC, UITableViewDataSource,UITableViewDelegate {
 
     
 //TODO: - General
     
-    var menuArray : [String] = ["My Profile","Events","Invite Friends","Payment","Verification","Change Password","Setting","About Us","Contact Us", "Terms & Conditions","Privacy Policy","Logout"]
+    var menuArray : [String] = ["My Profile","Events","Party History","Setting","Help","Logout"]
     
 //TODO: - Controls
     
@@ -33,6 +33,10 @@ class MenuViewController: UIViewController, UITableViewDataSource,UITableViewDel
         self.tblMain.tableFooterView = UIView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.tblMain.reloadData()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -50,12 +54,20 @@ class MenuViewController: UIViewController, UITableViewDataSource,UITableViewDel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellID", for: indexPath) as! MenuTableViewCell
         cell.lblTitle.text = self.menuArray[indexPath.row]
+        
+        if (FoodBuddiesSingleton.shared.menuSelectedIndex == indexPath.row){
+            cell.indicatorView.isHidden = false
+        }else{
+            cell.indicatorView.isHidden = true
+        }
+        cell.selectionStyle = .none
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
         let index = indexPath.row
+        FoodBuddiesSingleton.shared.menuSelectedIndex = index
         switch index {
         case 0:
             //My Profile
@@ -68,79 +80,38 @@ class MenuViewController: UIViewController, UITableViewDataSource,UITableViewDel
         case 1:
             
             //Event
-            let eventVC = self.storyboard?.instantiateViewController(withIdentifier: "idEventsViewController") as! EventsViewController
+            let eventVC = self.storyboard?.instantiateViewController(withIdentifier: "idEventContainerViewController") as! EventContainerViewController
             let frontView = UINavigationController.init(rootViewController:eventVC)
             revealViewController().pushFrontViewController(frontView, animated: true)
             
             break;
             
-            //
         case 2:
-            //Invite Friends
-            let inviteVC = self.storyboard?.instantiateViewController(withIdentifier: "idInviteFriendsViewController") as! InviteFriendsViewController
-            let frontView = UINavigationController.init(rootViewController:inviteVC)
-            revealViewController().pushFrontViewController(frontView, animated: true)
-            break;
-        case 3:
             //Payment
             let paymentVC = self.storyboard?.instantiateViewController(withIdentifier: "idPaymentContainerViewController") as! PaymentContainerViewController
             let frontView = UINavigationController.init(rootViewController:paymentVC)
             revealViewController().pushFrontViewController(frontView, animated: true)
             break;
 
+        case 3:
+            //Settings
+            let settingVC = self.storyboard?.instantiateViewController(withIdentifier: "idSettingsViewController") as! SettingsViewController
+            let frontView = UINavigationController.init(rootViewController:settingVC)
+            revealViewController().pushFrontViewController(frontView, animated: true)
+            break;
+
         case 4:
-            //Verification
-           /* let inviteVC = self.storyboard?.instantiateViewController(withIdentifier: "idInviteFriendsViewController") as! InviteFriendsViewController
+            //Help
+            let helpVC = self.storyboard?.instantiateViewController(withIdentifier: "idHelpViewController") as! HelpViewController
+            let frontView = UINavigationController.init(rootViewController:helpVC)
+            revealViewController().pushFrontViewController(frontView, animated: true)
+            break;
+        case 5:
+            //Logout
+            /*let inviteVC = self.storyboard?.instantiateViewController(withIdentifier: "idInviteFriendsViewController") as! InviteFriendsViewController
             let frontView = UINavigationController.init(rootViewController:inviteVC)
             revealViewController().pushFrontViewController(frontView, animated: true)*/
-            break;
-
-        case 5:
-            //Change password
-            let inviteVC = self.storyboard?.instantiateViewController(withIdentifier: "idInviteFriendsViewController") as! InviteFriendsViewController
-            let frontView = UINavigationController.init(rootViewController:inviteVC)
-            revealViewController().pushFrontViewController(frontView, animated: true)
-            break;
-
-        case 6:
-            //Settings
-            let inviteVC = self.storyboard?.instantiateViewController(withIdentifier: "idInviteFriendsViewController") as! InviteFriendsViewController
-            let frontView = UINavigationController.init(rootViewController:inviteVC)
-            revealViewController().pushFrontViewController(frontView, animated: true)
-            break;
-
-        case 7:
-            //About Us
-            let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "idAboutUsViewController") as! AboutUsViewController
-            FoodBuddiesSingleton.shared.htmlValue = 1
-            let frontView = UINavigationController.init(rootViewController:aboutVC)
-            revealViewController().pushFrontViewController(frontView, animated: true)
-            break;
-        case 8:
-            //Contact Us
-            let contVC = self.storyboard?.instantiateViewController(withIdentifier: "idContactUSViewController") as! ContactUSViewController
-            let frontView = UINavigationController.init(rootViewController:contVC)
-            revealViewController().pushFrontViewController(frontView, animated: true)
-            break;
-        case 9:
-            //Terms & Condition
-            let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "idAboutUsViewController") as! AboutUsViewController
-            FoodBuddiesSingleton.shared.htmlValue = 2
-            let frontView = UINavigationController.init(rootViewController:aboutVC)
-            revealViewController().pushFrontViewController(frontView, animated: true)
-            break;
-        case 10:
-            //Privacy Policy
-            let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "idAboutUsViewController") as! AboutUsViewController
-            FoodBuddiesSingleton.shared.htmlValue = 3
-            let frontView = UINavigationController.init(rootViewController:aboutVC)
-            revealViewController().pushFrontViewController(frontView, animated: true)
-            break;
-        case 11:
-            //Logout
-            let inviteVC = self.storyboard?.instantiateViewController(withIdentifier: "idInviteFriendsViewController") as! InviteFriendsViewController
-            let frontView = UINavigationController.init(rootViewController:inviteVC)
-            revealViewController().pushFrontViewController(frontView, animated: true)
+            self.navigationController!.popToRootViewController(animated: true)
             break;
 
         default:

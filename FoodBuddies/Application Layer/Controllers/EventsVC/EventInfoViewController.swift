@@ -8,12 +8,12 @@
 
 import UIKit
 
-class EventInfoViewController: UIViewController {
+class EventInfoViewController: BaseVC {
 
     
 //TODO: - General
     
-    
+   
 //TODO: - Controls
     
     
@@ -33,7 +33,15 @@ class EventInfoViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+   
     
-
-
+    
+    
+//TODO: - UIButton Action
+    @IBAction func btnBookNowClick(_ sender: Any) {
+        let bookCountVC = self.storyboard?.instantiateViewController(withIdentifier: "idBookCountViewController") as! BookCountViewController
+        bookCountVC.view.backgroundColor = .clear
+        bookCountVC.modalPresentationStyle = .overCurrentContext
+        self.present(bookCountVC, animated: false, completion: nil)
+    }
 }

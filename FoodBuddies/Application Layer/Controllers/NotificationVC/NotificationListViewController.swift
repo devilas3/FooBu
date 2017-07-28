@@ -23,6 +23,8 @@ class NotificationListViewController: BaseVC,UITableViewDataSource,UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        createShareIcon()
+        
         // Do any additional setup after loading the view.
     }
 
